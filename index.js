@@ -18,7 +18,14 @@ app.use(cors());
 // Convertir body a objeto js
 app.use(express.json());
 
-// Crear rutas
+// RUTAS
+const rutas_articulos = require("./rutas/articulos");
+
+// Carga las rutas
+app.use("/api", rutas_articulos);
+
+
+// Rutas pruebas hardcodeadas
 app.get("/probando", (req, res) => {
 
 	console.log("Se ha ejecutado el endpoint probando");
