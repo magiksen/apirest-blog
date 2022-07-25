@@ -9,7 +9,7 @@ const ArticuloSchema = Schema({
 		type: String,
 		required: true
 	},
-	fecha {
+	fecha: {
 		type: Date,
 		default: Date.now
 	},
