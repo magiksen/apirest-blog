@@ -76,8 +76,28 @@ const crear = (req, res) => {
 	
 }
 
+const listar = (req, res) => {
+
+	let consulta = Articulo.find({}).exec((error, articulos) => {
+
+		if (error || !articulos) {
+			return res.status(404).json({
+				status: "error",
+				mensaje: "No se han encontrado articulos"
+			})
+		}
+
+		return res.status(200).send({
+			status: "success",
+			articulos
+		});
+
+	});
+}
+
 module.exports = {
 	prueba,
 	curso,
-	crear
+	crear,
+	listar
 }
