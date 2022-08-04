@@ -84,7 +84,7 @@ const listar = (req, res) => {
 			return res.status(404).json({
 				status: "error",
 				mensaje: "No se han encontrado articulos"
-			})
+			});
 		}
 
 		return res.status(200).send({
