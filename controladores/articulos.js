@@ -78,7 +78,14 @@ const crear = (req, res) => {
 
 const listar = (req, res) => {
 
-	let consulta = Articulo.find({}).exec((error, articulos) => {
+	let consulta = Articulo.find({});
+
+		if (req.params.ultimos) {
+			consulta.limit(3);
+		}
+
+		consulta.sort({fecha: -1})
+				.exec((error, articulos) => {
 
 		if (error || !articulos) {
 			return res.status(404).json({
@@ -89,6 +96,7 @@ const listar = (req, res) => {
 
 		return res.status(200).send({
 			status: "success",
+			contador: articulos.length,
 			articulos
 		});
 
