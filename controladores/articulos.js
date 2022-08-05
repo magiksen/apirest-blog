@@ -126,10 +126,31 @@ const uno = (req, res) => {
 	});
 }
 
+const borrar = (req, res) => {
+	let articulo_id = req.params.id;
+
+	Articulo.findByIdAndDelete({_id: articulo_id}, (error, articuloBorrado) => {
+
+		if (error || !articuloBorrado) {
+			return res.status(500).json({
+				status: "error",
+				mensaje: "Error al borar el articulo"
+			});
+		}
+
+		return res.status(200).json({
+			status: "success",
+			articulo: articuloBorrado,
+			mensaje: "Metodo de borar"
+		});
+	});
+}
+
 module.exports = {
 	prueba,
 	curso,
 	crear,
 	listar,
-	uno
+	uno,
+	borrar
 }
