@@ -103,9 +103,33 @@ const listar = (req, res) => {
 	});
 }
 
+const uno = (req, res) => {
+	// Recoger un id por la url
+	let id = req.params.id;
+
+	// Buscar el articulos
+	Articulo.findById(id, (error, articulo) => {
+
+		// Si no existe devolver error
+		if (error || !articulo) {
+			return res.status(404).json({
+				status: "error",
+				mensaje: "No se ha encontrado el articulo"
+			});
+		}
+
+		// Devolver resultado
+		return res.status(200).json({
+			status: "success",
+			articulo
+		});
+	});
+}
+
 module.exports = {
 	prueba,
 	curso,
 	crear,
-	listar
+	listar,
+	uno
 }
