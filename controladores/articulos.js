@@ -146,11 +146,58 @@ const borrar = (req, res) => {
 	});
 }
 
+const editar = (req, res) => {
+	// Recoger id articulo a editar
+	let articuloId = req.params.id;
+
+	// Recoge datos del body
+	let parametros = req.body;
+
+	// validar datos
+	try{
+		let validar_titulo = !validator.isEmpty(parametros.titulo) &&
+			validator.isLength(parametros.titulo, {min: 5, max: undefined});
+		let validar_contenido = !validator.isEmpty(parametros.contenido);
+
+		if (!validar_titulo || !validar_contenido) {
+			throw new Error("No se ha validado la informacion !!");
+		}
+
+	}catch(error){
+		return res.status(400).json({
+			status: "error",
+			mensaje: "Faltan datos por enviar"
+		});
+	}
+
+	// Buscar y actualizar articulo
+	Articulo.findByIdAndUpdate({_id: articuloId}, parametros, {new: true},(error, articuloActualizado) => {
+
+		if (error || !articuloActualizado) {
+			return res.status(500).json({
+				status: "error",
+				mensaje: "Error al actualizar"
+			});
+		}
+
+		// Devolver respuesta
+		return res.status(200).json({
+			status: "success",
+			articulo: articuloActualizado
+		});
+	})
+
+
+
+
+}
+
 module.exports = {
 	prueba,
 	curso,
 	crear,
 	listar,
 	uno,
-	borrar
+	borrar,
+	editar
 }
