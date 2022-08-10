@@ -256,6 +256,37 @@ const imagen = (req, res) => {
 	})
 }
 
+const buscar = (req, res) => {
+	// Sacar el string de busqueda
+	let busqueda = req.params.busqueda;
+
+	// Find OR
+	Articulo.find({
+		"$or": [
+			{ "titulo": { "$regex": busqueda, "$options": "i" }},
+			{ "contenido": { "$regex": busqueda, "$options": "i" }},
+		]
+	})
+		.sort({fecha: -1})
+		.exec((error, articulosEncontrados) => {
+
+			if (error || !articulosEncontrados || articulosEncontrados.length <= 0) {
+				return res.status(404).json({
+					status: "error",
+					mensaje: "No se han encontrado articulos"
+				});
+			}
+
+			return res.status(200).json({
+				status: "success",
+				articulos: articulosEncontrados
+			})
+		})
+
+	// Devolver resultado
+
+}
+
 module.exports = {
 	prueba,
 	curso,
@@ -265,5 +296,6 @@ module.exports = {
 	borrar,
 	editar,
 	subir,
-	imagen
+	imagen,
+	buscar
 }
